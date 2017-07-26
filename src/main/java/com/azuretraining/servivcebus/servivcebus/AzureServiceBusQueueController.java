@@ -19,16 +19,6 @@ import com.microsoft.windowsazure.services.servicebus.models.ReceiveQueueMessage
 @RestController
 public class AzureServiceBusQueueController {
 
-	/*
-	 * 
-	 * Endpoint= sb://satyensbnamespace.servicebus.windows.net/;
-	 * SharedAccessKeyName=RootManageSharedAccessKey;
-	 * SharedAccessKey=bj48aW+FdBRjSDr1q5mau93FnyOgUH3kc/NiiAkWMx4=
-	 * 
-	 */
-	
-	//Endpoint=sb://rjqueue.servicebus.windows.net/;SharedAccessKeyName=aruneshservicebuskey;SharedAccessKey=pRyrdDQd9rywyq7/N1E7L/tDJ6nuKfjqNv+c5tuUV88=
-
 	private static ServiceBusContract service;
 
 	static {
@@ -40,19 +30,17 @@ public class AzureServiceBusQueueController {
 	}
 
 	@RequestMapping("/add/{message}")
-	public void sendMessageToQueue(@PathVariable("message") String message) {
+	public String sendMessageToQueue(@PathVariable("message") String message) {
 		try {
-			// Create a queue
-//			QueueInfo queueInfo = new QueueInfo("aruneshqueue");
-//			queueInfo.setMaxSizeInMegabytes(1024L);// 1 GB Max Size
 
-			//CreateQueueResult result = service.createQueue(queueInfo);
 			service.getQueue("aruneshqueue");
 			BrokeredMessage brokeredMessage = new BrokeredMessage(message);
 			service.sendQueueMessage("aruneshqueue", brokeredMessage);
+			
 		} catch (ServiceException e) {
 			e.printStackTrace();
 		}
+		return "Message send to Queue";
 	}
 
 	@RequestMapping("/read")
